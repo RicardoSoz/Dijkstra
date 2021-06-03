@@ -3,7 +3,9 @@
 #include <queue>
 #include<string>
 #include <fstream>
-#include <iomanip>   
+#include <iomanip>  
+
+auto op = 0;
 
 using namespace std;
     
@@ -46,10 +48,9 @@ vector<int> BellmanFordSP(vector< vector<pair<int, int> > > &adjList, int &start
                 // Report problem.
     
     return dist;
-    }
+}
     
 void PrintShortestPath(vector<int> &dist, int &start){
-    int op;
     ofstream MyFile("Resultados_Test.txt");
     MyFile << "Printing the shortest paths for node "<< start <<endl;
     for(int i = 0; i < dist.size(); i++){

@@ -1,6 +1,11 @@
 #include <iostream>
 #include <vector>
 #include <queue>
+#include<string>
+#include <fstream>
+#include <iomanip>   
+
+auto op = 0;
 
 using namespace std;
 
@@ -15,10 +20,9 @@ vector<int> DijkstraSP(vector< vector<pair<int, int> > > &adjList, int &start){
     
     // Initialize all source->vertex as infinite.
     int n = adjList.size();
-    for(int i = 0; i < n; i++)
-        {
+    for(int i = 0; i < n; i++){
         dist.push_back(1000000007); // Define "infinity" as necessary by constraints.
-        }
+    }
         
     // Create a PQ.
     priority_queue<pair<int, int>, vector< pair<int, int> >, greater<pair<int, int> > > pq;
@@ -28,42 +32,46 @@ vector<int> DijkstraSP(vector< vector<pair<int, int> > > &adjList, int &start){
     dist[start] = 0;
     
     // While pq isn't empty...
-    while(pq.empty() == false)
-        {
-        // Get min distance vertex from pq. (Call it u.)
-        int u = pq.top().first;
-        pq.pop();
+    while(pq.empty() == false){
+      // Get min distance vertex from pq. (Call it u.)
+      int u = pq.top().first;
+      pq.pop();
         
-        // Visit all of u's friends. For each one (called v)....
-        for(int i = 0; i < adjList[u].size(); i++)
-            {
-            int v = adjList[u][i].first;
-            int weight = adjList[u][i].second;
+      // Visit all of u's friends. For each one (called v)....
+      for(int i = 0; i < adjList[u].size(); i++){
+        int v = adjList[u][i].first;
+        int weight = adjList[u][i].second;
             
-            // If the distance to v is shorter by going through u...
-            if(dist[v] > dist[u] + weight)
-                {
-                // Update the distance of v.
-                dist[v] = dist[u] + weight;
-                // Insert v into the pq. 
-                pq.push(make_pair(v, dist[v]));
-                }
-            }
+        // If the distance to v is shorter by going through u...
+        if(dist[v] > dist[u] + weight){
+          // Update the distance of v.
+          dist[v] = dist[u] + weight;
+          // Insert v into the pq. 
+          pq.push(make_pair(v, dist[v]));
         }
+      }
+    }
     
     return dist;
 }
-    
-void PrintShortestPath(vector<int> &dist, int &start)
-    {
-    cout << "\nPrinting the shortest paths for node " << start << ".\n";
-    for(int i = 0; i < dist.size(); i++)
-        {
-        cout << "The distance from node " << start << " to node " << i << " is: " << dist[i] << endl;
-        }
+
+void PrintShortestPath(vector<int> &dist, int &start){
+    ofstream MyFile("Resultados_Test.txt");
+    MyFile << "Printing the shortest paths for node "<< start <<endl;
+    for(int i = 0; i < dist.size(); i++){
+        op++;
+        if(dist[i]==1000000007){continue;}
+        MyFile << "The distance from node " << start << " to node " << i << " is: " << dist[i] << endl;   
     }
+    cout << "Total of operations: " << op <<endl;
+    MyFile << "Total of operations: " << op <<endl;
+}
     
 int main(int argc, char** argv) {
+
+    time_t start, end;
+    time(&start);
+
     cout << "Program started.\n";
     
     // Our adjacency list.
@@ -113,6 +121,13 @@ int main(int argc, char** argv) {
     
     // Print the list.
     PrintShortestPath(dist, node);
+    
+    time(&end);
+
+    double time_taken = double(end - start);
+    cout << "Time taken by program is : " << fixed
+         << time_taken << setprecision(10);
+    cout << " sec " << endl;
     
     cout << "Program ended.\n";
 
