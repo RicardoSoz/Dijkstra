@@ -4,6 +4,7 @@
 #include<string>
 #include <fstream>
 #include <iomanip>  
+#include<numeric>  
 
 auto op = 0;
 
@@ -51,7 +52,10 @@ vector<int> BellmanFordSP(vector< vector<pair<int, int> > > &adjList, int &start
 }
     
 void PrintShortestPath(vector<int> &dist, int &start){
-    ofstream MyFile("Resultados_Test.txt");
+    string str = "Bellman-Ford_Results_Test_.txt";
+    string size = to_string(dist.size());
+    str.insert(26, size);
+    ofstream MyFile(str);
     MyFile << "Printing the shortest paths for node "<< start <<endl;
     for(int i = 0; i < dist.size(); i++){
         op++;
@@ -62,7 +66,7 @@ void PrintShortestPath(vector<int> &dist, int &start){
     MyFile << "Total of operations: " << op <<endl;
 }
     
-int main(){
+int main(int argc, char** argv){
 
     time_t start, end;
     time(&start);
@@ -76,15 +80,37 @@ int main(){
     int n, c, r;
     cin >> n;
 
-    int appearance[n];
-
-    for (int i = 0; i < n; i++){
-        cin >> appearance[i];
+    //Vector with the number of edges for every node
+    vector<int> appearance; 
+    int value;  
+    for(int i = 0; i < n; i++){
+        cin >> value;
+        appearance.push_back(value);
     }
 
+
+    //Check if the input is correct
+    try{
+      if(n != appearance.size()) throw "The size of the array appearence is not the same as the number of Nodes";
+    }
+    catch(char * str){
+      cout << "Exception: " << str << endl;
+      exit(0);
+    }
+
+    //Check if the input is correct
+    try{
     cin >> c;
     cin >> r;
+    if(c!=2) throw c;
+    if(r!= accumulate(appearance.begin(),appearance.end(),0)) throw r;
+    }
+    catch(int e){
+      cout << "Wrong input file"<< endl;
+      exit(0);
+    }
 
+    //Create a vector with all the pair values
     vector<int> inputMatrix;
     int k;
     int rsqr = r*2;
@@ -118,7 +144,7 @@ int main(){
     int node = 0;
     vector<int> dist = BellmanFordSP(adjList, node);
     
-    // Print the list.
+    // Print the vector
     PrintShortestPath(dist, node);
 
     time(&end);
