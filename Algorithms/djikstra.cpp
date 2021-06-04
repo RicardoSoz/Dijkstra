@@ -42,6 +42,7 @@ vector<int> DijkstraSP(vector< vector<pair<int, int> > > &adjList, int &start){
       for(int i = 0; i < adjList[u].size(); i++){
         int v = adjList[u][i].first;
         int weight = adjList[u][i].second;
+        op++;
             
         // If the distance to v is shorter by going through u...
         if(dist[v] > dist[u] + weight){
@@ -63,7 +64,6 @@ void PrintShortestPath(vector<int> &dist, int &start){
     ofstream MyFile(str);
     MyFile << "Printing the shortest paths for node "<< start <<endl;
     for(int i = 0; i < dist.size(); i++){
-        op++;
         if(dist[i]==1000000007){continue;}
         MyFile << "The distance from node " << start << " to node " << i << " is: " << dist[i] << endl;   
     }

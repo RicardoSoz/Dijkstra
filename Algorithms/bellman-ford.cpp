@@ -32,7 +32,7 @@ vector<int> BellmanFordSP(vector< vector<pair<int, int> > > &adjList, int &start
             for(int j = 0; j < adjList[u].size(); j++){
                 int v = adjList[u][j].first;
                 int weight = adjList[u][j].second;
-                
+                op++;  
                 // If the distance from source to v is bigger than dist[u] + weight of (u,v)...
                 if(dist[v] > dist[u] + weight){
                     // Update dist[v] to dist[u] + weight(u,V)
@@ -58,7 +58,6 @@ void PrintShortestPath(vector<int> &dist, int &start){
     ofstream MyFile(str);
     MyFile << "Printing the shortest paths for node "<< start <<endl;
     for(int i = 0; i < dist.size(); i++){
-        op++;
         if(dist[i]==1000000007){continue;}
         MyFile << "The distance from node " << start << " to node " << i << " is: " << dist[i] << endl;   
     }
